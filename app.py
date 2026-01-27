@@ -1,6 +1,7 @@
 import os
 from flask import Flask, jsonify, render_template,url_for
 import pymysql
+import requests
 
 app = Flask(__name__)
 
@@ -35,18 +36,19 @@ def init_db():
 def hello():
     Connection = get_db_connection()
     cursor = Connection.cursor()
-    cursor.execute("select message fFROM messages order by id desc limit 1;")
+    cursor.execute("select message FROM messages order by id desc limit 1;")
     result = cursor.fetchall()
     cursor.close()
     Connection.close()
-    return render_template('index.html', message=result[0][0] if result else "No messages found.")
+    return render_template('index.html', messages=result)
 
 @app.route('/submit', methods=['POST'])
 
 def submit():
+    new_message = request.form.get('new_message')
     Connection = get_db_connection()
     cursor = Connection.cursor()
-    cursor.execute("INSERT INTO messages (message) VALUES ('%s');", (new_message,))
+    cursor.execute("INSERT INTO messages (message) VALUES (%s);", (new_message,))
     cursor.close()
     Connection.close()
     return jsonify({"status": new_message})

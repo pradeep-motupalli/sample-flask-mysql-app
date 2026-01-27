@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Flask MySQL Messages</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 600px;
+            margin: 40px auto;
+        }
+        ul {
+            padding-left: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        input[type="text"] {
+            width: 75%;
+            padding: 8px;
+        }
+        button {
+            padding: 8px 12px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Messages</h2>
+
+    <!-- Display messages -->
+    <ul>
+        {% for msg in messages %}
+            <li>{{ msg[0] }}</li>
+        {% else %}
+            <li>No messages yet.</li>
+        {% endfor %}
+    </ul>
+
+    <hr>
+
+    <!-- Message form -->
+    <form method="POST" action="{{ url_for('submit') }}">
+        <input 
+            type="text" 
+            name="new_message" 
+            placeholder="Type your message..."
+            required
+        >
+        <button type="submit">Submit</button>
+    </form>
+
+</body>
+</html>

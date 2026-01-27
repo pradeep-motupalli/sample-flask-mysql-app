@@ -1,0 +1,25 @@
+pipeline (
+    agent any
+
+    stages {
+        stage('Clone repository') {
+            steps {
+                git branch: 'main', url: 'https://github.com/pradeep-motupalli/sample-flask-mysql-app.git'
+            }
+        }
+        stage('Build Flask Application') {
+            steps {
+                echo 'Building Flask Application...'
+                sh 'docker build -t flask-app .'
+            }
+        }
+        stage('Deploy with Docker compose') {
+            steps {
+                echo 'Deploying Flask Application with Docker Compose...'
+                sh 'docker-compose down || true'
+                echo 'Starting up services...'
+                sh 'docker-compose up -d --build'
+            }
+        }
+    }
+)

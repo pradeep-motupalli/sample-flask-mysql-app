@@ -1,0 +1,4 @@
+#generate requirements for flask and mysql
+Flask==2.3.2
+pyMySQL==1.0.3
+werkzeug==3.0.1

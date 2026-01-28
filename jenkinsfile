@@ -7,12 +7,6 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/pradeep-motupalli/sample-flask-mysql-app.git'
             }
         }
-        stage('Build Flask Application') {
-            steps {
-                echo 'Building Flask Application...'
-                sh 'docker build -t flask-app .'
-            }
-        }
         stage('Deploy with Docker compose') {
             steps {
                 echo 'Deploying Flask Application with Docker Compose...'

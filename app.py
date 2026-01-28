@@ -1,7 +1,7 @@
 import os
-from flask import Flask, jsonify, render_template,url_for
+from flask import Flask, jsonify, render_template,url_for, request
 import pymysql
-import requests
+#import requests
 
 app = Flask(__name__)
 
@@ -16,7 +16,7 @@ def get_db_connection():
         user=app.config['MYSQL_USER'],
         password=app.config['MYSQL_PASSWORD'],
         db=app.config['MYSQL_DB'],
-        cursorclass=pymysql.cursors.Cursor
+        cursorclass=pymysql.cursors.Cursor,
         autocommit=True
     )
 

@@ -5,7 +5,7 @@ import pymysql
 
 app = Flask(__name__)
 
-app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', 'localhost')
+app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', 'mysql')
 app.config['MYSQL_USER'] = os.getenv('MYSQL_USER', 'root')
 app.config['MYSQL_PASSWORD'] = os.getenv('MYSQL_PASSWORD', '')
 app.config['MYSQL_DB'] = os.getenv('MYSQL_DB', 'test_db')
@@ -21,16 +21,22 @@ def get_db_connection():
     )
 
 def init_db():
-    connection = get_db_connection()
-    cur = connection.cursor()
-    cur.execute("""
-        CREATE TABLE IF NOT EXISTS messages (
-            id INT AUTO_INCREMENT PRIMARY KEY,
-            message TEXT
-        );
-    """)
-    cur.close()
-    connection.close()
+    for i in range(10):
+        try:
+            connection = get_db_connection()
+            cur = connection.cursor()
+            cur.execute("""
+                CREATE TABLE IF NOT EXISTS messages (
+                    id INT AUTO_INCREMENT PRIMARY KEY,
+                    message TEXT
+                );
+            """)
+            cur.close()
+            connection.close()
+        except Exception as e:
+            print(f"Database connection failed, retrying... ({i+1}/10)")
+            import time
+            time.sleep(3)
 
 @app.route('/')
 def hello():
@@ -52,6 +58,10 @@ def submit():
     cursor.close()
     Connection.close()
     return jsonify({"status": new_message})
+
+@app.route('/health')
+def health():
+    return jsonify({"status": "ok"}), 200
 
 if __name__ == '__main__':
     init_db()

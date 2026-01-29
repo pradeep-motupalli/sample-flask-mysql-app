@@ -1,0 +1,51 @@
+This project demonstrates a two-tier web application using Flask as the application layer and MySQL as the database layer, fully containerized using Docker and orchestrated with Docker Compose.
+The application is deployed and managed via Jenkins CI/CD.
+
+User
+ │
+ │ HTTP (Port 5000)
+ ▼
+Flask Application (Container)
+ │
+ │ Internal Docker Network
+ ▼
+MySQL Database (Container)
+
+
+Components
+
+Flask App: Handles HTTP requests, business logic, and DB interactions
+
+MySQL: Stores application data
+
+Docker Compose: Manages multi-container setup
+
+Jenkins: Automates build and deployment
+
+
+🚀 Application Functionality
+
+Displays a web page served by Flask
+
+Accepts user input (messages)
+
+Stores messages in a MySQL database
+
+Fetches and displays the latest message
+
+Includes health checks for container monitoring
+
+
+🔁 CI/CD with Jenkins
+
+The Jenkins pipeline performs:
+
+Clones the GitHub repository
+
+Stops existing containers
+
+Builds Docker images using Docker Compose
+
+Deploys the application
+
+Verifies running containers
